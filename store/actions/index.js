@@ -21,10 +21,14 @@ export function newRound() {
   }
 }
 
-export function updateCount(count) {
+export function updateCount(count, player) {
     return (dispatch) => {
       console.log("count: ", count);
-      dispatch({type: UPDATE_COUNT, count});
+      dispatch({type: UPDATE_COUNT, count, player});
     }
   
+}
+async function updateServer(cmd, data) {
+  let res = await fetch('https://dnfh56i1fk.execute-api.eu-west-1.amazonaws.com/dev/diskAPI');
+  console.log(res.headers.map.thrower);
 }

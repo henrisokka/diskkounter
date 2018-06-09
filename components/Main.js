@@ -17,17 +17,19 @@ const hole = {
 }
 
 class Main extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       front: true,
       round: false,
       currentHole: 0,
       roundData: [],
     }
-
+    this.getPlayerCounters = this.getPlayerCounters.bind(this); 
     //this.holeCompleted = this.holeCompleted.bind(this);
-    //this.newHole = this.newHole.bind(this);
+    //this.newHole = this.newHole.bind(this); 
+    console.log("PLAYERS IN CONSTRUCTOR: ", props);
+
   }
 
   handlePress(cmd) {
@@ -38,29 +40,19 @@ class Main extends React.Component {
     }
   }
 
-  async updateServer(cmd, data) {
-    let res = await fetch('https://dnfh56i1fk.execute-api.eu-west-1.amazonaws.com/dev/diskAPI');
-    console.log(res.headers.map.thrower);
-  }
-/*
-  holeCompleted(data) {
-    console.log(this.props);
-    console.log("hole completed");
-    let updatedRoundData = this.state.roundData;
-    updatedRoundData[this.state.currentHole] = data;
-    this.setState({roundData: updatedRoundData, currentHole: this.state.currentHole + 1});
-    this.newHole();
-  }
-
-  newHole() {
-    this.setState({roundData: this.state.roundData.concat([Object.assign({}, hole)])});
-  }
-*/
+  
+  
   componentDidReceiveProps(props) {
     console.log("new")
   }
   showStore() {
     console.log(this.props);
+  }
+
+  getPlayerCounters() {
+    return this.props.players.map((p, index) => {
+      return <Round started={this.props.started} left={index * 150} player={p} readyHandler={(count) => this.props.updateCount(count, p)} />
+    })
   }
 
   render() {
@@ -69,28 +61,28 @@ class Main extends React.Component {
         <Text style={{fontWeight: "bold", fontSize: 40}}>DISK</Text>
         <Text>Welcome to diskkounter</Text>
         <Button title="NEW ROUND" onPress={() => this.props.newRound()} />
-        <Round started={this.props.started} readyHandler={this.props.updateCount} currentHole={this.state.roundData[this.state.currentHole]} />
-        <Overviewer data={this.props.dataReducer} />
+        
+        {this.getPlayerCounters()}
+
+          
+        <Overviewer holes={this.props.holes} data={this.props.dataReducer}
+          currentHole={this.props.holes}
+        />
         <Button title="DEBUG" onPress={this.showStore.bind(this)} />
       </View>
     );
   }
 }
 
-function mapStateToProps(state, props) {
-  /*
-  console.log("mapStateToProps");
-  console.log(state);
-  console.log(props);
-  */
+function mapStateToProps(state, props) { 
   return {
       started: state.disk.started,
+      players: state.disk.players,
+      holes: state.disk.holes,
+      currentHole: state.disk.currentHole,
   }
 }
 
-// Doing this merges our actions into the component’s props,
-// while wrapping them in dispatch() so that they immediately dispatch an Action.
-// Just by doing this, we will have access to the actions defined in out actions file (action/home.js)
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch);
 }

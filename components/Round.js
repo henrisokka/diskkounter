@@ -8,13 +8,25 @@ class Round extends React.Component {
     super(props); 
     this.state = {
       count: 0,
+      style: {
+        position: "absolute",
+        left: props.left,
+        top: 300,
+        height: 150,
+        width: 150,
+        overflor: "auto",
+        backgroundColor: "grey",
+        button: {
+          backgroundColor: "black"
+        }
+      }
     }
     console.log("ROund props: ", props);
   }
   componentWillReceiveProps(props) {
     console.log("ROund received: ", props);
   }
-
+ 
   render() {
     if (!this.props.started) {
       return (<View>
@@ -23,14 +35,14 @@ class Round extends React.Component {
         </View>);
     }
     return (
-      <View>
-        <Text>This is the 1st round</Text>
-        <Button title="+1" onPress={()=> this.setState({count: this.state.count + 1})} />
+      <View style={this.state.style}>
+        <Text>{this.props.player}</Text>
+        <Button style={this.state.style.button} title="+1" onPress={()=> this.setState({count: this.state.count + 1})} />
         <Text style={{fontSize: 70}}>{this.state.count}</Text>
         <Button title="-1" onPress={()=> this.setState({count: this.state.count - 1})} />
         
         <Button title="Ready!" onPress={() => {
-          this.props.readyHandler({count: this.state.count});
+          this.props.readyHandler(this.state.count);
           this.setState({count: 0});
       }} />
       </View>

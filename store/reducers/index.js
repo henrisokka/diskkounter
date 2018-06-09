@@ -28,16 +28,13 @@ const disk = (state = initialStore, action) => {
         case NEW_ROUND:
           newState = Object.assign({}, state);
           newState.started = true;
-
-          console.log("NEW_ROUND");
-          console.log("newState:", newState);
           return newState;
 
 
         case UPDATE_COUNT:
             console.log("COUNT IS U KNO is:", action.count);
             console.log("action is: ", action); 
-            return updatePlayer(state, state.players[state.activePlayer], action.count.count);
+            return updatePlayer(state, action.player, action.count);
         default:
             return state;
     }
