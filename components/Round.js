@@ -45,7 +45,7 @@ function mapStateToProps(state, props) {
   console.log(props);
   */
   return {
-      started: state.disk.roundData.started
+      started: state.disk.started
   }
 }
 

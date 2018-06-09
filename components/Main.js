@@ -69,7 +69,7 @@ class Main extends React.Component {
         <Text style={{fontWeight: "bold", fontSize: 40}}>DISK</Text>
         <Text>Welcome to diskkounter</Text>
         <Button title="NEW ROUND" onPress={() => this.props.newRound()} />
-        <Round started={this.props.roundData.started} readyHandler={this.holeCompleted} currentHole={this.state.roundData[this.state.currentHole]} />
+        <Round started={this.props.started} readyHandler={this.props.updateCount} currentHole={this.state.roundData[this.state.currentHole]} />
         <Overviewer data={this.props.dataReducer} />
         <Button title="DEBUG" onPress={this.showStore.bind(this)} />
       </View>
@@ -84,7 +84,7 @@ function mapStateToProps(state, props) {
   console.log(props);
   */
   return {
-      roundData: state.disk.roundData
+      started: state.disk.started,
   }
 }
 
