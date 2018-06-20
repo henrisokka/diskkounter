@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { TouchableOpacity, Text, View, Button, StatusBar } from 'react-native';
 import Overviewer from './Overviewer';
-import Round from './Round';
 
 
 import {bindActionCreators} from 'redux';
@@ -9,29 +8,8 @@ import { connect } from 'react-redux';
 
 import * as Actions from '../store/actions/index';
 
-const hole = {
-  count: 0,
-  completed: false,
-  comment: "",
-  roundId: undefined,
-}
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      front: true,
-      round: false,
-      currentHole: 0,
-      roundData: [],
-    }
-    this.getPlayerCounters = this.getPlayerCounters.bind(this); 
-    //this.holeCompleted = this.holeCompleted.bind(this);
-    //this.newHole = this.newHole.bind(this); 
-    console.log("PLAYERS IN CONSTRUCTOR: ", props);
-
-  }
-
   handlePress(cmd) {
     console.log(cmd);
     if(cmd === "ROUND" && this.state.round === false) {
@@ -40,35 +18,50 @@ class Main extends React.Component {
     }
   }
 
-  
-  
   componentDidReceiveProps(props) {
     console.log("new")
   }
-  showStore() {
+  debug() {
     console.log(this.props);
   }
 
-  getPlayerCounters() {
-    return this.props.players.map((p, index) => {
-      return <Round started={this.props.started} left={index * 150} player={p} readyHandler={(count) => this.props.updateCount(count, p)} />
-    })
+  getPlayerButtons(players, handler) {
+    return players.map((p, i) => {
+      return  <TouchableOpacity onPress={() => handler(i)} style={{backgroundColor: "yellow", height: "5%"}}>
+                <Text>{p.name}</Text>
+              </TouchableOpacity>
+      });
   }
 
   render() {
     return (
-      <View>
-        <Text style={{fontWeight: "bold", fontSize: 40}}>DISK</Text>
-        <Text>Welcome to diskkounter</Text>
-        <Button title="NEW ROUND" onPress={() => this.props.newRound()} />
+      <View style={{flex: 1, flexDirection: "row"}}>
+        <StatusBar hidden={true} />
+       
+        <View style={{width: "30%", top: "5%", backgroundColor: "blue", height: "100%", left: 0}}>
+          {this.getPlayerButtons(this.props.players, this.props.selectPlayer)}
+          <View style={{position: "absolute", bottom: 0, left: "50%"}}>
+            <Button color="red" title="+" onPress={() => console.log("add player")} />
+          </View>
+        </View>
+        <View style={{}}>
+          <Text style={{fontWeight: "bold", fontSize: 40}}>DISK</Text>
+          <Button title="Start round" onPress={() => this.props.newRound()} />
+          {this.props.roundStarted ? <Text>Round Started</Text> : <Text>Round not started</Text>}
+          {this.selectedPlayer !== -1 ? 
+            <View>
+              <Text>
+              {this.props.players[this.props.selectedPlayer] ? 
+              this.props.players[this.props.selectedPlayer].name : ''}</Text>
+            </View>
         
-        {this.getPlayerCounters()}
+          : ''}
+        </View>
 
-          
         <Overviewer holes={this.props.holes} data={this.props.dataReducer}
           currentHole={this.props.holes}
         />
-        <Button title="DEBUG" onPress={this.showStore.bind(this)} />
+        <Button title="DEBUG" onPress={this.debug.bind(this)} />
       </View>
     );
   }
@@ -76,10 +69,9 @@ class Main extends React.Component {
 
 function mapStateToProps(state, props) { 
   return {
-      started: state.disk.started,
+      roundStarted: state.disk.roundStarted,
       players: state.disk.players,
-      holes: state.disk.holes,
-      currentHole: state.disk.currentHole,
+      selectedPlayer: state.disk.selectedPlayer,
   }
 }
 

@@ -15,16 +15,11 @@ class Round extends React.Component {
         height: 150,
         width: 150,
         overflor: "auto",
-        backgroundColor: "grey",
-        button: {
-          backgroundColor: "black"
-        }
+        backgroundColor: "grey"
       }
     }
-    console.log("ROund props: ", props);
   }
   componentWillReceiveProps(props) {
-    console.log("ROund received: ", props);
   }
  
   render() {
@@ -37,7 +32,7 @@ class Round extends React.Component {
     return (
       <View style={this.state.style}>
         <Text>{this.props.player}</Text>
-        <Button style={this.state.style.button} title="+1" onPress={()=> this.setState({count: this.state.count + 1})} />
+        <Button color="green" title="+1" onPress={()=> this.setState({count: this.state.count + 1})} />
         <Text style={{fontSize: 70}}>{this.state.count}</Text>
         <Button title="-1" onPress={()=> this.setState({count: this.state.count - 1})} />
         
