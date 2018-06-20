@@ -13,3 +13,12 @@ export function selectPlayer(player) {
       payload: player,
     }
 }
+
+export function submitResult(result) {
+  return {
+    type: actionTypes.SUBMIT_RESULT,
+    payload: {
+      result,
+    }
+  }
+}

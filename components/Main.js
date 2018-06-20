@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, Button, StatusBar } from 'react-native';
-import Overviewer from './Overviewer';
 
+import NumberInput from './NumberInput';
 
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
@@ -50,17 +50,15 @@ class Main extends React.Component {
           {this.props.roundStarted ? <Text>Round Started</Text> : <Text>Round not started</Text>}
           {this.selectedPlayer !== -1 ? 
             <View>
-              <Text>
               {this.props.players[this.props.selectedPlayer] ? 
-              this.props.players[this.props.selectedPlayer].name : ''}</Text>
+              <NumberInput player={this.props.players[this.props.selectedPlayer]} 
+                submit={this.props.submitResult}
+              /> : ''}
             </View>
         
           : ''}
         </View>
 
-        <Overviewer holes={this.props.holes} data={this.props.dataReducer}
-          currentHole={this.props.holes}
-        />
         <Button title="DEBUG" onPress={this.debug.bind(this)} />
       </View>
     );
