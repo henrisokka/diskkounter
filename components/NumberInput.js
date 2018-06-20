@@ -3,9 +3,13 @@ import { Text, View, Button, TextInput } from 'react-native';
 
 export default class NumberInput extends React.Component {
   state = {
-    result: 0,
+    result: '',
   }
 
+  componentWillReceiveProps() {
+    this.setState({result: ''});
+  }
+  
   render() {
     return (
       <View>    
