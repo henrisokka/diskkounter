@@ -12,6 +12,7 @@ let initialStore = {
     currentHole: 0,
     roundStarted: false,
     selectedPlayer: -1,
+    uiState: "MAIN",
     players: [
         {
             name: "Esimerkki Pelaaja",
@@ -48,7 +49,6 @@ let initialStore = {
 
 
 const newRound = (state, action) => {
-    console.log("new round");
     return {
         ...state,
         roundStarted: true,
@@ -56,7 +56,6 @@ const newRound = (state, action) => {
 }
 
 const selectPlayer = (state, action) => {
-    console.log("selectPlauyer: ", action.payload);
     return {
         ...state,
         selectedPlayer: action.payload,
@@ -64,25 +63,33 @@ const selectPlayer = (state, action) => {
 }
 
 const submitResult = (state, action) => {
-    let newState = Object.assign({}, state);
-    newState.players[state.selectedPlayer].results[state.currentHole].result = action.payload.result;
-    console.log("newState: ", newState);
-    return newState;
+    let players = state.players.slice();
+    players[state.selectedPlayer].results[state.currentHole].result = action.payload.result;
+    
+    return {
+        ...state,
+        players: players,
+    };
 }
 
 const nextHole = (state, action) => {
-    let players = state.players;
+    let players = state.players.slice();
     
     for (let player in players) {
         players[player].results.push(Object.assign({}, holeTemplate));
     } 
 
-    console.log("nextHole: ", players);
-
     return {
         ...state,
         currentHole: state.currentHole + 1,
         players: players,
+    }
+}
+
+const changeUI = (state, action) => {
+    return {
+        ...state,
+        uiState: action.payload,
     }
 }
 
@@ -92,6 +99,7 @@ const disk = (state = initialStore, action) => {
         case actionTypes.SELECT_PLAYER: return selectPlayer(state, action)
         case actionTypes.SUBMIT_RESULT: return submitResult(state, action)
         case actionTypes.NEXT_HOLE: return nextHole(state, action);
+        case actionTypes.CHANGE_UI: return changeUI(state, action);
         default:
             return state;
     }

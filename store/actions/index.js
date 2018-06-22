@@ -3,4 +3,5 @@ export {
   selectPlayer,
   submitResult,
   nextHole,
+  changeUI
 } from './disk';

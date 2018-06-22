@@ -28,3 +28,11 @@ export function nextHole() {
     type: actionTypes.NEXT_HOLE
   }
 }
+
+export function changeUI(newState) {
+  console.log("changeUI", newState);
+  return {
+    type: actionTypes.CHANGE_UI,
+    payload: newState,
+  }
+}
