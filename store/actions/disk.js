@@ -22,3 +22,9 @@ export function submitResult(result) {
     }
   }
 }
+
+export function nextHole() {
+  return {
+    type: actionTypes.NEXT_HOLE
+  }
+}

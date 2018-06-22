@@ -47,6 +47,8 @@ class Main extends React.Component {
         <View style={{}}>
           <Text style={{fontWeight: "bold", fontSize: 40}}>DISK</Text>
           <Button title="Start round" onPress={() => this.props.newRound()} />
+          <Button title="Next hole" onPress={() => this.props.nextHole()} />
+          <Text>Current Hole: {this.props.currentHole}</Text>
           {this.props.roundStarted ? <Text>Round Started</Text> : <Text>Round not started</Text>}
           {this.selectedPlayer !== -1 ? 
             <View>
@@ -70,6 +72,7 @@ function mapStateToProps(state, props) {
       roundStarted: state.disk.roundStarted,
       players: state.disk.players,
       selectedPlayer: state.disk.selectedPlayer,
+      currentHole: state.disk.currentHole,
   }
 }
 

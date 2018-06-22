@@ -1,5 +1,6 @@
 export {
   newRound,
   selectPlayer,
-  submitResult
+  submitResult,
+  nextHole,
 } from './disk';

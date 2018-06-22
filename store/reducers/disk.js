@@ -2,6 +2,12 @@ import { combineReducers } from 'redux';
  
 import * as actionTypes from "../actions/actionTypes" //Import the actions types constant we defined in our actions
  
+const holeTemplate = {
+    holeId: null,
+    result: null,
+    comment: "",
+}
+
 let initialStore = {
     currentHole: 0,
     roundStarted: false,
@@ -50,6 +56,7 @@ const newRound = (state, action) => {
 }
 
 const selectPlayer = (state, action) => {
+    console.log("selectPlauyer: ", action.payload);
     return {
         ...state,
         selectedPlayer: action.payload,
@@ -63,11 +70,28 @@ const submitResult = (state, action) => {
     return newState;
 }
 
+const nextHole = (state, action) => {
+    let players = state.players;
+    
+    for (let player in players) {
+        players[player].results.push(Object.assign({}, holeTemplate));
+    } 
+
+    console.log("nextHole: ", players);
+
+    return {
+        ...state,
+        currentHole: state.currentHole + 1,
+        players: players,
+    }
+}
+
 const disk = (state = initialStore, action) => {
     switch (action.type) {
         case actionTypes.NEW_ROUND: return newRound(state, action)
         case actionTypes.SELECT_PLAYER: return selectPlayer(state, action)
         case actionTypes.SUBMIT_RESULT: return submitResult(state, action)
+        case actionTypes.NEXT_HOLE: return nextHole(state, action);
         default:
             return state;
     }
